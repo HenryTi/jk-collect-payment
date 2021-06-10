@@ -1,14 +1,20 @@
-import { Context, Form, IntSchema, List, LMR, Page, Schema, UiNumberItem, UiSchema, VPage } from "tonva-react";
+import React from "react";
+import { BoolSchema, Context, Form, IntSchema, List, LMR, Page, Schema, UiNumberItem, UiSchema, VPage } from "tonva-react";
 import { CCollect, CustomerPendingReceive } from "./CCollect";
 
 export class VCustomerCollect extends VPage<CCollect> {
+	private checkbox: HTMLInputElement;
+	private list: List;
 	header() {return '客户收款'}
 	content() {
 		let {customer, customerOrderDetails} = this.controller;
 		return <div className="">
 			<div className="px-3 my-2">customer: {customer}</div>
-			<List items={customerOrderDetails} 
-				item={{render: this.renderCustomerOrderDetail}} />
+			<label className="mx-3 my-2">
+				<input ref={inp => this.checkbox = inp} type="checkbox" onChange={this.allSelectChanged} /> 全选
+			</label>
+			<List ref={list => {if (list) this.list = list;}} items={customerOrderDetails} 
+				item={{render: this.renderCustomerOrderDetail, onSelect: this.onRowSelect}} />
 			<div className="px-3 my-2">
 				<button className="btn btn-primary" onClick={this.submit}>提交</button>
 			</div>
@@ -26,6 +32,16 @@ export class VCustomerCollect extends VPage<CCollect> {
 		</Page>);
 	}
 
+	private allSelectChanged = (evt: React.ChangeEvent<HTMLInputElement>) => {
+		if (evt.currentTarget.checked === true) {
+			this.list?.selectAll();
+		}
+		else if (evt.currentTarget.checked === false) {
+			this.list?.unselectAll();
+		}
+		this.checkbox.indeterminate = false;
+	}
+
 	private renderDoneDetail = (row: CustomerPendingReceive, index: number): JSX.Element => {
 		let {product, item, receive, receiveAmount} = row;
 		let right = <div className="d-flex align-items-center">
@@ -35,12 +51,29 @@ export class VCustomerCollect extends VPage<CCollect> {
 		return <LMR className="px-3 py-2" right={right}>
 			product:{product} pack:{item} 应收:{receive}
 		</LMR>
-	}	
+	}
+
+	private onRowSelect = (row: CustomerPendingReceive, isSelected: boolean, anySelected: boolean) => {
+		if (!this.checkbox) return;
+		let len = this.list.selectedItems.length;
+		if (len < this.controller.customerOrderDetails.length && len>0) {
+			this.checkbox.indeterminate = true;
+		}
+		else if (len === 0) {
+			this.checkbox.indeterminate = false;
+			this.checkbox.checked = false;
+		}
+		else {
+			this.checkbox.indeterminate = false;
+			this.checkbox.checked = true;
+		}
+	}
 
 	private renderCustomerOrderDetail = (row: CustomerPendingReceive, index: number): JSX.Element => {
 		let {product, item, receive} = row;
+		/*
 		let schema:Schema = [
-			{name: 'deliverQuantity', type: 'integer', min: 0, max: receive} as IntSchema
+			{name: 'deliverQuantity', type: 'integer', min: 0, max: receive} as IntSchema,
 		];
 		let onChanged = (context:Context, value:any, prev:any):Promise<void> => {
 			row.receiveAmount = value;
@@ -55,7 +88,7 @@ export class VCustomerCollect extends VPage<CCollect> {
 					className: 'text-right',
 					onChanged,
 					readOnly: true,
-				} as UiNumberItem
+				} as UiNumberItem,
 			}
 		}
 		let FieldContainer = (label:any, content:JSX.Element): JSX.Element => {
@@ -65,6 +98,8 @@ export class VCustomerCollect extends VPage<CCollect> {
 			</div>;
 		}
 		let right = <Form schema={schema} uiSchema={uiSchema} FieldContainer={FieldContainer}/>
+		*/
+		let right = <div>实收: {receive}</div>;
 		return <LMR className="px-3 py-2" right={right}>
 			product:{product} pack:{item} 应收:{receive}
 		</LMR>
