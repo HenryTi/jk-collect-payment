@@ -4,6 +4,7 @@ import { CCollect, CustomerPendingReceive } from "./CCollect";
 
 export class VCustomerCollect extends VPage<CCollect> {
 	private checkbox: HTMLInputElement;
+	private button: HTMLButtonElement;
 	private list: List;
 	header() {return '客户收款'}
 	content() {
@@ -16,7 +17,10 @@ export class VCustomerCollect extends VPage<CCollect> {
 			<List ref={list => {if (list) this.list = list;}} items={customerOrderDetails} 
 				item={{render: this.renderCustomerOrderDetail, onSelect: this.onRowSelect}} />
 			<div className="px-3 my-2">
-				<button className="btn btn-primary" onClick={this.submit}>提交</button>
+				<button ref={btn => this.button = btn} 
+					disabled={true}
+					className="btn btn-primary" 
+					onClick={this.submit}>提交</button>
 			</div>
 		</div>
 	}
@@ -58,14 +62,17 @@ export class VCustomerCollect extends VPage<CCollect> {
 		let len = this.list.selectedItems.length;
 		if (len < this.controller.customerOrderDetails.length && len>0) {
 			this.checkbox.indeterminate = true;
+			this.button.disabled = false;
 		}
 		else if (len === 0) {
 			this.checkbox.indeterminate = false;
 			this.checkbox.checked = false;
+			this.button.disabled = true;
 		}
 		else {
 			this.checkbox.indeterminate = false;
 			this.checkbox.checked = true;
+			this.button.disabled = false;
 		}
 	}
 
