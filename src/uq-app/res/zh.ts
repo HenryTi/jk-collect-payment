@@ -1,5 +1,7 @@
 export const zh = {
 	home: '首页',
+	collect: '收款',
+	invoice: '开票',
 	relation: '关系',
 	discover: '发现',
 	test: '测试',

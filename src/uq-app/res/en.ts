@@ -1,5 +1,7 @@
 export const en = {
 	home: 'Home',
+	collect: 'Collect',
+	invoice: 'Invoice',
 	relation: 'Relation',
 	discover: 'Discover',
 	test: 'Test',

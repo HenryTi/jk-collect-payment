@@ -9,18 +9,22 @@ function caption(label:string|JSX.Element, icon:string) {
 
 export class VMain extends VPage<CApp> {
 	protected get tabsProps(): TabsProps {
-		let { cHome, cBug, cMe, cUI } = this.controller;
+		let { cHome, cCollect, cInvoice, cBug, cMe, cUI } = this.controller;
 		let tabs: TabProp[] = [
 			{name: 'home', caption: caption(t('home'), 'home'), content: cHome.tab},
+			{name: 'collect', caption: caption(t('collect'), 'credit-card'), content: cCollect.tab, onShown: cCollect.load},
+			{name: 'invoice', caption: caption(t('invoice'), 'file-text-o'), content: cInvoice.tab, onShown: cInvoice.load},
 			{name: 'me', caption: caption(t('me'), 'user-o'), content: cMe.tab, load: cMe.load},
 		];
 		if (this.isDev === true) {
+			/*
 			tabs.push({
 				name: 'UI', caption: caption(t('UI'), 'television'), content: cUI.tab
 			});
 			tabs.push({
 				name: 'debug', caption: caption(t('debug'), 'bug'), content: cBug.tab, onShown: cBug.load
 			});
+			*/
 		}
 		return {tabs};
 	}
