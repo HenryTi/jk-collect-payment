@@ -1,4 +1,4 @@
-//=== UqApp builder created on Wed Mar 10 2021 16:02:54 GMT-0500 (GMT-05:00) ===//
+//=== UqApp builder created on Mon Jul 05 2021 14:23:36 GMT-0400 (北美东部夏令时间) ===//
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IDXValue, Uq, UqTuid, UqQuery, UqID, UqIDX, UqIX } from "tonva-react";
 
@@ -8,6 +8,7 @@ import { IDXValue, Uq, UqTuid, UqQuery, UqID, UqIDX, UqIX } from "tonva-react";
 //===============================
 
 export interface Tuid$sheet {
+	id?: number;
 	no: string;
 	user: number;
 	date: any;
@@ -22,6 +23,7 @@ export interface Tuid$sheet {
 }
 
 export interface Tuid$user {
+	id?: number;
 	name: string;
 	nick: string;
 	icon: string;
@@ -31,10 +33,11 @@ export interface Tuid$user {
 
 export interface Param$poked {
 }
-interface Return$pokedRet {
+export interface Return$pokedRet {
 	poke: number;
+	$id: number;
 }
-interface Result$poked {
+export interface Result$poked {
 	ret: Return$pokedRet[];
 }
 
@@ -49,6 +52,8 @@ export interface OrderMaster {
 	id?: number;
 	no?: string;
 	customer: number;
+	$owner?: number;
+	$create?: any;
 }
 
 export interface OrderDetail {
@@ -94,30 +99,50 @@ export interface $PiecewiseDetail {
 export interface Achieve {
 	id: number;
 	saleAmount?: number;
-	deliver?: number|IDXValue;
+	deliver?: number;
+	$act?: number;
 }
 
 export interface Hours {
 	id: number;
+	onsite?: number;
+	offsite?: number;
+	break?: number;
+	sick?: number;
+	over?: number;
+	noTimeLog?: number;
+	$act?: number;
+}
+
+export interface ActParamAchieve {
+	id: number|IDXValue;
+	saleAmount?: number|IDXValue;
+	deliver?: number|IDXValue;
+	$act?: number;
+}
+
+export interface ActParamHours {
+	id: number|IDXValue;
 	onsite?: number|IDXValue;
 	offsite?: number|IDXValue;
 	break?: number|IDXValue;
 	sick?: number|IDXValue;
 	over?: number|IDXValue;
-	noTimeLog?: number;
+	noTimeLog?: number|IDXValue;
+	$act?: number;
 }
 
 export interface CustomerTag {
+	ix: number;
 	id: number;
-	id2: number;
 }
 
 export interface UserStaff {
+	ix: number;
 	id: number;
-	id2: number;
 }
 
-export interface ParamIDActs {
+export interface ParamActs {
 	customer?: Customer[];
 	orderMaster?: OrderMaster[];
 	orderDetail?: OrderDetail[];
@@ -125,15 +150,15 @@ export interface ParamIDActs {
 	staff?: Staff[];
 	$Piecewise?: $Piecewise[];
 	$PiecewiseDetail?: $PiecewiseDetail[];
-	achieve?: Achieve[];
-	hours?: Hours[];
+	achieve?: ActParamAchieve[];
+	hours?: ActParamHours[];
 	customerTag?: CustomerTag[];
 	userStaff?: UserStaff[];
 }
 
 
 export interface UqExt extends Uq {
-	IDActs(param:ParamIDActs): Promise<any>;
+	Acts(param:ParamActs): Promise<any>;
 
 	$sheet: UqTuid<Tuid$sheet>;
 	$user: UqTuid<Tuid$user>;

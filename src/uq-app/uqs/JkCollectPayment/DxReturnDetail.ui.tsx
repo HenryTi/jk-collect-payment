@@ -1,7 +1,7 @@
 import { Res, setRes, TFunc, UI } from "tonva-react";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FieldItem, FieldItemInt, FieldItemNum, FieldItemString, FieldItemId } from "tonva-react";
-import { Achieve } from "./BzHelloTonva";
+import { DxReturnDetail } from "./JkCollectPayment";
 
 /*--fields--*/
 const fields = {
@@ -11,29 +11,49 @@ const fields = {
 		"isKey": false,
 		"label": "Id"
 	} as FieldItemId,
-	saleAmount: {
-		"name": "saleAmount",
+	orderDetail: {
+		"name": "orderDetail",
+		"type": "id",
+		"isKey": false,
+		"label": "OrderDetail"
+	} as FieldItemId,
+	receive: {
+		"name": "receive",
 		"type": "number",
 		"isKey": false,
 		"widget": "number",
-		"label": "SaleAmount"
+		"label": "Receive"
 	} as FieldItemNum,
-	deliver: {
-		"name": "deliver",
+	receiveDone: {
+		"name": "receiveDone",
 		"type": "number",
 		"isKey": false,
 		"widget": "number",
-		"label": "Deliver"
+		"label": "ReceiveDone"
+	} as FieldItemNum,
+	invoice: {
+		"name": "invoice",
+		"type": "number",
+		"isKey": false,
+		"widget": "number",
+		"label": "Invoice"
+	} as FieldItemNum,
+	invoiceDone: {
+		"name": "invoiceDone",
+		"type": "number",
+		"isKey": false,
+		"widget": "number",
+		"label": "InvoiceDone"
 	} as FieldItemNum,
 };
 /*==fields==*/
 
 const fieldArr: FieldItem[] = [
-	fields.saleAmount, fields.deliver, 
+	fields.orderDetail, fields.receive, fields.receiveDone, fields.invoice, fields.invoiceDone, 
 ];
 
 export const ui: UI = {
-	label: "Achieve",
+	label: "DxReturnDetail",
 	fieldArr,
 	fields,
 };
@@ -51,6 +71,6 @@ export const t:TFunc = (str:string|JSX.Element): string|JSX.Element => {
 	return res[str as string] ?? str;
 }
 
-export function render(item: Achieve):JSX.Element {
+export function render(item: DxReturnDetail):JSX.Element {
 	return <>{JSON.stringify(item)}</>;
 };

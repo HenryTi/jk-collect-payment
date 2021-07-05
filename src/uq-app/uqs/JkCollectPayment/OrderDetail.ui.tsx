@@ -1,7 +1,7 @@
 import { Res, setRes, TFunc, UI } from "tonva-react";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FieldItem, FieldItemInt, FieldItemNum, FieldItemString, FieldItemId } from "tonva-react";
-import { OrderDetail } from "./BzHelloTonva";
+import { OrderDetail } from "./JkCollectPayment";
 
 /*--fields--*/
 const fields = {
@@ -11,11 +11,11 @@ const fields = {
 		"isKey": false,
 		"label": "Id"
 	} as FieldItemId,
-	parent: {
-		"name": "parent",
+	main: {
+		"name": "main",
 		"type": "id",
 		"isKey": true,
-		"label": "Parent"
+		"label": "Main"
 	} as FieldItemId,
 	row: {
 		"name": "row",
@@ -24,19 +24,18 @@ const fields = {
 		"widget": "updown",
 		"label": "Row"
 	} as FieldItemInt,
+	item: {
+		"name": "item",
+		"type": "id",
+		"isKey": false,
+		"label": "Item"
+	} as FieldItemId,
 	product: {
 		"name": "product",
 		"type": "id",
 		"isKey": false,
 		"label": "Product"
 	} as FieldItemId,
-	price: {
-		"name": "price",
-		"type": "number",
-		"isKey": false,
-		"widget": "number",
-		"label": "Price"
-	} as FieldItemNum,
 	quantity: {
 		"name": "quantity",
 		"type": "number",
@@ -51,11 +50,18 @@ const fields = {
 		"widget": "number",
 		"label": "Amount"
 	} as FieldItemNum,
+	price: {
+		"name": "price",
+		"type": "number",
+		"isKey": false,
+		"widget": "number",
+		"label": "Price"
+	} as FieldItemNum,
 };
 /*==fields==*/
 
 const fieldArr: FieldItem[] = [
-	fields.parent, fields.row, fields.product, fields.price, fields.quantity, fields.amount, 
+	fields.main, fields.row, fields.item, fields.product, fields.quantity, fields.amount, fields.price, 
 ];
 
 export const ui: UI = {

@@ -1,4 +1,4 @@
-import { Res, UI } from "tonva-react";
+import { Res, setRes, TFunc, UI } from "tonva-react";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FieldItem, FieldItemInt, FieldItemNum, FieldItemString, FieldItemId } from "tonva-react";
 import { Customer } from "./BzHelloTonva";
@@ -23,7 +23,7 @@ const fields = {
 		"type": "string",
 		"isKey": false,
 		"widget": "string",
-		"label": "名字"
+		"label": "FirstName"
 	} as FieldItemString,
 	lastName: {
 		"name": "lastName",
@@ -35,7 +35,7 @@ const fields = {
 };
 /*==fields==*/
 
-export const fieldArr: FieldItem[] = [
+const fieldArr: FieldItem[] = [
 	fields.no, fields.firstName, fields.lastName, 
 ];
 
@@ -45,16 +45,19 @@ export const ui: UI = {
 	fields,
 };
 
-export const res: Res<any> = {
-	zh: {
+const resRaw: Res<any> = {
+	$zh: {
 	},
-	en: {
+	$en: {
 	}
 };
+const res: any = {};
+setRes(res, resRaw);
+
+export const t:TFunc = (str:string|JSX.Element): string|JSX.Element => {
+	return res[str as string] ?? str;
+}
 
 export function render(item: Customer):JSX.Element {
-	let {firstName, lastName, no} = item;
-	return <span>
-		<small className="d-inline-block w-3c">{no}</small> <b>{firstName} {lastName}</b>
-	</span>;
+	return <>{JSON.stringify(item)}</>;
 };

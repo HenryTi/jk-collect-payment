@@ -1,26 +1,26 @@
-import { Res, UI } from "tonva-react";
+import { Res, setRes, TFunc, UI } from "tonva-react";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FieldItem, FieldItemInt, FieldItemNum, FieldItemString, FieldItemId } from "tonva-react";
 import { UserStaff } from "./BzHelloTonva";
 
 /*--fields--*/
 const fields = {
+	ix: {
+		"name": "ix",
+		"type": "id",
+		"isKey": false,
+		"label": "Ix"
+	} as FieldItemId,
 	id: {
 		"name": "id",
 		"type": "id",
 		"isKey": false,
 		"label": "Id"
 	} as FieldItemId,
-	id2: {
-		"name": "id2",
-		"type": "id",
-		"isKey": false,
-		"label": "Id2"
-	} as FieldItemId,
 };
 /*==fields==*/
 
-export const fieldArr: FieldItem[] = [
+const fieldArr: FieldItem[] = [
 	
 ];
 
@@ -30,12 +30,18 @@ export const ui: UI = {
 	fields,
 };
 
-export const res: Res<any> = {
-	zh: {
+const resRaw: Res<any> = {
+	$zh: {
 	},
-	en: {
+	$en: {
 	}
 };
+const res: any = {};
+setRes(res, resRaw);
+
+export const t:TFunc = (str:string|JSX.Element): string|JSX.Element => {
+	return res[str as string] ?? str;
+}
 
 export function render(item: UserStaff):JSX.Element {
 	return <>{JSON.stringify(item)}</>;

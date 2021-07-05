@@ -1,4 +1,6 @@
 import { CHome } from "./home";
+import { CCollect } from "collect";
+import { CInvoice } from "invoice";
 import { CMe } from "./me";
 import { CBug } from "./bug";
 import { CUqApp } from "./CBase";
@@ -11,6 +13,8 @@ const gaps = [10, 3,3,3,3,3,5,5,5,5,5,5,5,5,10,10,10,10,15,15,15,30,30,60];
 
 export class CApp extends CUqApp {
 	cHome: CHome;
+	cCollect: CCollect;
+	cInvoice: CInvoice;
 	cBug: CBug;
 	cMe: CMe;
 	cUI: CTester;
@@ -19,6 +23,8 @@ export class CApp extends CUqApp {
 		this.setRes(res);
 		setUI(this.uqs);
 		this.cHome = this.newC(CHome);
+		this.cCollect = this.newC(CCollect);
+		this.cInvoice = this.newC(CInvoice);
 		this.cBug = this.newC(CBug);
 		this.cMe = this.newC(CMe);
 		this.cUI = this.newC(CTester) as CTester;
