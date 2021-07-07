@@ -18,19 +18,19 @@ const fields = {
 		"widget": "number",
 		"label": "Receive"
 	} as FieldItemNum,
+	receiveReturn: {
+		"name": "receiveReturn",
+		"type": "number",
+		"isKey": false,
+		"widget": "number",
+		"label": "ReceiveReturn"
+	} as FieldItemNum,
 	receiveDone: {
 		"name": "receiveDone",
 		"type": "number",
 		"isKey": false,
 		"widget": "number",
 		"label": "ReceiveDone"
-	} as FieldItemNum,
-	receiveReturnDone: {
-		"name": "receiveReturnDone",
-		"type": "number",
-		"isKey": false,
-		"widget": "number",
-		"label": "ReceiveReturnDone"
 	} as FieldItemNum,
 	invoice: {
 		"name": "invoice",
@@ -39,6 +39,13 @@ const fields = {
 		"widget": "number",
 		"label": "Invoice"
 	} as FieldItemNum,
+	invoiceReturn: {
+		"name": "invoiceReturn",
+		"type": "number",
+		"isKey": false,
+		"widget": "number",
+		"label": "InvoiceReturn"
+	} as FieldItemNum,
 	invoiceDone: {
 		"name": "invoiceDone",
 		"type": "number",
@@ -46,18 +53,11 @@ const fields = {
 		"widget": "number",
 		"label": "InvoiceDone"
 	} as FieldItemNum,
-	invoiceReturnDone: {
-		"name": "invoiceReturnDone",
-		"type": "number",
-		"isKey": false,
-		"widget": "number",
-		"label": "InvoiceReturnDone"
-	} as FieldItemNum,
 };
 /*==fields==*/
 
 const fieldArr: FieldItem[] = [
-	fields.receive, fields.receiveDone, fields.receiveReturnDone, fields.invoice, fields.invoiceDone, fields.invoiceReturnDone, 
+	fields.receive, fields.receiveReturn, fields.receiveDone, fields.invoice, fields.invoiceReturn, fields.invoiceDone, 
 ];
 
 export const ui: UI = {

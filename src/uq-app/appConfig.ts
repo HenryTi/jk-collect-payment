@@ -27,6 +27,11 @@ export const appConfig: AppConfig = {
 			alias: 'CollectPayment',
 			version: '0.1.1',
 		},
+		{
+			dev: jk,
+			name: 'customer',
+			version: '0.1.0',
+		},
 	],
 	noUnit: true,
     tvs: {},

@@ -2,16 +2,16 @@ import { action, makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { List, LMR, Page, VPage } from "tonva-react";
-import { CInvoice, CustomerPendingInvoice, shouldInvoice } from "./CInvoice";
+import { CReceive, CustomerPendingReceive, shouldReceive } from "./CReceive";
 
 const currencyFormat = new Intl.NumberFormat('cn-ZH', { style: 'currency', currency: 'CNY' });
 
-export class VCustomerInvoice extends VPage<CInvoice> {
+export class VCustomerReceive extends VPage<CReceive> {
 	private checkbox: HTMLInputElement;
 	private list: List;
 	sumAmount: number = 0;
 	disabled: boolean = true;
-	constructor(controller: CInvoice) {
+	constructor(controller: CReceive) {
 		super(controller);
 		makeObservable(this, {
 			sumAmount: observable,
@@ -20,19 +20,19 @@ export class VCustomerInvoice extends VPage<CInvoice> {
 			setSumAmount: action,
 		});
 	}
-	header() {return '客户开票'}
+	header() {return '客户收款'}
 	content() {
-		let {customer, customerPendingInvoice, uqs} = this.controller;
+		let {customer, customerPendingReceive, uqs} = this.controller;
 		return <div className="">
 			<div className="px-3 my-2">{uqs.JkCustomer.Customer.tv(customer)}</div>
 			<label className="mx-3 my-2">
 				<input ref={inp => this.checkbox = inp} type="checkbox" onChange={this.allSelectChanged} />
 				<span className="ms-3 text-primary">全选</span>
 			</label>
-			<List ref={list => {if (list) this.list = list;}} items={customerPendingInvoice} 
+			<List ref={list => {if (list) this.list = list;}} items={customerPendingReceive} 
 				item={{render: this.renderCustomerOrderDetail, onSelect: this.onRowSelect}} />
 			<div className="m-3">
-				开票金额：<span className="fs-3 text-success">{React.createElement(observer(() => <>{currencyFormat.format(this.sumAmount)}</>))}</span>
+				收款金额：<span className="fs-3 text-success">{React.createElement(observer(() => <>{currencyFormat.format(this.sumAmount)}</>))}</span>
 			</div>
 			<div className="px-3 my-2">
 				{
@@ -47,18 +47,18 @@ export class VCustomerInvoice extends VPage<CInvoice> {
 
 	private submit = async () => {
 		let {customer, uqs} = this.controller;
-		await this.controller.doneInvoice();
+		await this.controller.doneReceive();
 		this.closePage();
-		this.openPageElement(<Page header="开票完成" back="close">
+		this.openPageElement(<Page header="收款完成" back="close">
 			<div className="px-3 my-2">{uqs.JkCustomer.Customer.tv(customer)}</div>
 			<div className="m-3">
-				开票金额：<span className="fs-3 text-success">{currencyFormat.format(this.sumAmount)}</span>
+				收款金额：<span className="fs-3 text-success">{currencyFormat.format(this.sumAmount)}</span>
 			</div>
 		</Page>);
 	}
 
 	setSumAmount() {
-		this.sumAmount = this.controller.customerPendingInvoice.reduce((sum, row) => sum + shouldInvoice(row), 0);
+		this.sumAmount = this.controller.customerPendingReceive.reduce((sum, row) => sum + shouldReceive(row), 0);
 	}
 
 	private allSelectChanged = (evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,24 +73,24 @@ export class VCustomerInvoice extends VPage<CInvoice> {
 		this.checkbox.indeterminate = false;
 	}
 
-	private renderDoneDetail = (row: CustomerPendingInvoice, index: number): JSX.Element => {
+	private renderDoneDetail = (row: CustomerPendingReceive, index: number): JSX.Element => {
 		let {product, item} = row;
-		let right = <div>{currencyFormat.format(shouldInvoice(row))}</div>;
+		let right = <div>{currencyFormat.format(shouldReceive(row))}</div>;
 		return <LMR className="px-3 py-2" right={right}>
 			product:{product} pack:{item}
 		</LMR>
 	}
 
-	onRowSelect = (row: CustomerPendingInvoice, isSelected: boolean, anySelected: boolean) => {		
+	onRowSelect = (row: CustomerPendingReceive, isSelected: boolean, anySelected: boolean) => {		
 		if (!this.checkbox) return;
 		if (!row) return;
 		let {orderDetail} = row;
-		this.controller.setCustomerPendingInvoiceSelected(orderDetail, isSelected);
+		this.controller.setCustomerPendingReceiveSelected(orderDetail, isSelected);
 		let len = this.list.selectedItems.length;
-		if (len < this.controller.customerPendingInvoice.length && len>0) {
+		if (len < this.controller.customerPendingReceive.length && len>0) {
 			this.checkbox.indeterminate = true;
 			this.disabled = false;
-			let v = shouldInvoice(row);
+			let v = shouldReceive(row);
 			if (isSelected === false) v = -v;
 			this.sumAmount += v;
 		}
@@ -108,9 +108,9 @@ export class VCustomerInvoice extends VPage<CInvoice> {
 		}
 	}
 
-	private renderCustomerOrderDetail = (row: CustomerPendingInvoice, index: number): JSX.Element => {
+	private renderCustomerOrderDetail = (row: CustomerPendingReceive, index: number): JSX.Element => {
 		let {product, item} = row;
-		let right = <div>{currencyFormat.format(shouldInvoice(row))}</div>;
+		let right = <div>{currencyFormat.format(shouldReceive(row))}</div>;
 		return <LMR className="px-3 py-2" right={right}>
 			product:{product} pack:{item}
 		</LMR>

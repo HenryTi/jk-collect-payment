@@ -1,55 +1,61 @@
 import { CApp, CUqBase } from "uq-app";
 import { VInvoice } from "./VInvoice";
-import { ReturnCustomerPendingInvoiceRet } from 'uq-app/uqs/JkCollectPayment'
+import { ReturnCustomerPendingInvoiceRet, ReturnPendingInvoice$page } from 'uq-app/uqs/JkCollectPayment'
 import { VCustomerInvoice } from "./VCustomerInvoice";
-import { makeObservable, observable } from "mobx";
-
-export interface PendingInvoice {
-	customer: number;
-	rowCount: number;
-}
+import { QueryPager } from "tonva-react";
 
 export interface CustomerPendingInvoice extends ReturnCustomerPendingInvoiceRet {
-	invoiceAmount: number;
+	isSelected: boolean;
+}
+
+export function shouldInvoice(cpr: CustomerPendingInvoice):number {
+	let {invoice, invoiceReturn} = cpr;
+	if (invoice === undefined) return 0;
+	return invoice + (invoiceReturn ?? 0);
 }
 
 export class CInvoice extends CUqBase {
-	pendingInvoice: PendingInvoice[];
+	warehouse: number;
 	customer: number;
-	customerOrderDetails: CustomerPendingInvoice[];
+	pager: QueryPager<ReturnPendingInvoice$page>;
+	customerPendingInvoice: CustomerPendingInvoice[];
 
 	constructor(cApp: CApp) {
 		super(cApp);
-		makeObservable(this, {
-			pendingInvoice: observable,
-		});
+		this.pager = new QueryPager(this.uqs.JkCollectPayment.PendingInvoice);
 	}
 
-	protected async internalStart() {
+	protected async internalStart() {		
 	}
 
 	tab = () => this.renderView(VInvoice);
 
 	load = async () => {
-		let ret = await this.uqs.JkCollectPayment.PendingInvoice.query({});
-		this.pendingInvoice = ret.ret;
+		await this.pager.first(undefined);
 	}
 
-	loadCustomerPendingInvoice = async(row: PendingInvoice) => {
+	loadCustomerPendingInvoice = async(row: ReturnPendingInvoice$page) => {
 		let {customer} = row;
 		let ret = await this.uqs.JkCollectPayment.CustomerPendingInvoice.query({customer});
 		this.customer = customer;
-		this.customerOrderDetails = ret.ret as CustomerPendingInvoice[];
+		this.customerPendingInvoice = ret.ret as CustomerPendingInvoice[];
 		this.openVPage(VCustomerInvoice);
+	}
+	
+	setCustomerPendingInvoiceSelected(orderDetail: number, isSelected: boolean) {
+		let row = this.customerPendingInvoice.find(v => v.orderDetail === orderDetail);
+		if (row) row.isSelected = isSelected;
 	}
 
 	doneInvoice = async () => {
-		// let ret = 
+		let invoiceDetail = this.customerPendingInvoice.filter(v => v.isSelected === true);
+		let detail = invoiceDetail.map(v => ({
+			orderDetail: v.orderDetail,
+			amount: shouldInvoice(v)
+		}));
 		await this.uqs.JkCollectPayment.DoneInvoice.submit({
 			customer: this.customer,
-			detail: this.customerOrderDetails
-				.filter(v => v.invoiceAmount !== undefined)
-				.map(v => ({orderDetail:v.orderDetail, amount: v.invoiceAmount})),
+			detail
 		});
 		await this.load();
 	}

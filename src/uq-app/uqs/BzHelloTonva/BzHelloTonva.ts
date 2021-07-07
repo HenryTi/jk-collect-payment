@@ -1,4 +1,4 @@
-//=== UqApp builder created on Mon Jul 05 2021 14:34:28 GMT-0400 (北美东部夏令时间) ===//
+//=== UqApp builder created on Tue Jul 06 2021 18:36:11 GMT-0400 (北美东部夏令时间) ===//
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IDXValue, Uq, UqTuid, UqQuery, UqID, UqIDX, UqIX } from "tonva-react";
 
