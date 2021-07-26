@@ -47,12 +47,14 @@ export class CInvoice extends CUqBase {
 		if (row) row.isSelected = isSelected;
 	}
 
-	doneInvoice = async () => {
+	doneInvoice = async (detail: {orderDetail: number; amount: number;}[]) => {
+		/*
 		let invoiceDetail = this.customerPendingInvoice.filter(v => v.isSelected === true);
 		let detail = invoiceDetail.map(v => ({
 			orderDetail: v.orderDetail,
 			amount: shouldInvoice(v)
 		}));
+		*/
 		await this.uqs.JkCollectPayment.DoneInvoice.submit({
 			customer: this.customer,
 			detail

@@ -1,4 +1,4 @@
-//=== UqApp builder created on Tue Jul 06 2021 18:36:11 GMT-0400 (北美东部夏令时间) ===//
+//=== UqApp builder created on Sun Jul 25 2021 18:24:51 GMT-0400 (北美东部夏令时间) ===//
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IDXValue, Uq, UqTuid, UqAction, UqQuery, UqID, UqIDX, UqIX } from "tonva-react";
 
@@ -93,8 +93,10 @@ export interface ReturnCustomerPendingInvoiceRet {
 	amount: number;
 	price: number;
 	invoice: number;
-	invoiceReturn: number;
 	invoiceDone: number;
+	invoiceReturn: number;
+	invoiceReturnDone: number;
+	$id: number;
 }
 export interface ResultCustomerPendingInvoice {
 	ret: ReturnCustomerPendingInvoiceRet[];
@@ -111,8 +113,9 @@ export interface ReturnCustomerPendingReceiveRet {
 	amount: number;
 	price: number;
 	receive: number;
-	receiveReturn: number;
 	receiveDone: number;
+	receiveReturn: number;
+	receiveReturnDone: number;
 }
 export interface ResultCustomerPendingReceive {
 	ret: ReturnCustomerPendingReceiveRet[];
@@ -125,7 +128,6 @@ export interface ReturnCustomerPendingRet {
 	customer: number;
 	receive: number;
 	invoice: number;
-	$id: number;
 }
 export interface ResultCustomerPending {
 	ret: ReturnCustomerPendingRet[];
@@ -162,22 +164,16 @@ export interface $PiecewiseDetail {
 	value: number;
 }
 
-export interface ReturnDetail {
-	id?: number;
-	main?: number;
-	orderDetail: number;
-	quantity: number;
-	amount: number;
-}
-
 export interface DxOrderDetail {
 	id: number;
 	receive?: number;
-	receiveReturn?: number;
 	receiveDone?: number;
+	receiveReturn?: number;
+	receiveReturnDone?: number;
 	invoice?: number;
-	invoiceReturn?: number;
 	invoiceDone?: number;
+	invoiceReturn?: number;
+	invoiceReturnDone?: number;
 	$act?: number;
 }
 
@@ -203,11 +199,13 @@ export interface DxCustomerInvoice {
 export interface ActParamDxOrderDetail {
 	id: number|IDXValue;
 	receive?: number|IDXValue;
-	receiveReturn?: number|IDXValue;
 	receiveDone?: number|IDXValue;
+	receiveReturn?: number|IDXValue;
+	receiveReturnDone?: number|IDXValue;
 	invoice?: number|IDXValue;
-	invoiceReturn?: number|IDXValue;
 	invoiceDone?: number|IDXValue;
+	invoiceReturn?: number|IDXValue;
+	invoiceReturnDone?: number|IDXValue;
 	$act?: number;
 }
 
@@ -245,7 +243,6 @@ export interface ParamActs {
 	orderMain?: OrderMain[];
 	$Piecewise?: $Piecewise[];
 	$PiecewiseDetail?: $PiecewiseDetail[];
-	returnDetail?: ReturnDetail[];
 	dxOrderDetail?: ActParamDxOrderDetail[];
 	dxReturnDetail?: ActParamDxReturnDetail[];
 	dxCustomerReceive?: ActParamDxCustomerReceive[];
@@ -272,7 +269,6 @@ export interface UqExt extends Uq {
 	OrderMain: UqID<any>;
 	$Piecewise: UqID<any>;
 	$PiecewiseDetail: UqID<any>;
-	ReturnDetail: UqID<any>;
 	DxOrderDetail: UqIDX<any>;
 	DxReturnDetail: UqIDX<any>;
 	DxCustomerReceive: UqIDX<any>;

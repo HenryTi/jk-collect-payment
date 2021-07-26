@@ -1,4 +1,4 @@
-//=== UqApp builder created on Tue Jul 06 2021 18:36:11 GMT-0400 (北美东部夏令时间) ===//
+//=== UqApp builder created on Sun Jul 25 2021 18:24:51 GMT-0400 (北美东部夏令时间) ===//
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IDXValue, Uq, UqTuid, UqQuery, UqMap, UqID } from "tonva-react";
 
@@ -198,6 +198,11 @@ export interface TuidBrand {
 	name: string;
 }
 
+export interface TuidCustomerSettingType {
+	id?: number;
+	description: string;
+}
+
 export interface ParamSearchCustomer {
 	key: string;
 }
@@ -328,6 +333,7 @@ export interface UqExt extends Uq {
 	Domain: UqTuid<TuidDomain>;
 	ProductX: UqTuid<TuidProductX>;
 	Brand: UqTuid<TuidBrand>;
+	CustomerSettingType: UqTuid<TuidCustomerSettingType>;
 	SearchCustomer: UqQuery<ParamSearchCustomer, ResultSearchCustomer>;
 	GetBuyerAccountByNo: UqQuery<ParamGetBuyerAccountByNo, ResultGetBuyerAccountByNo>;
 	GetCustomerByNo: UqQuery<ParamGetCustomerByNo, ResultGetCustomerByNo>;
@@ -349,6 +355,7 @@ export interface UqExt extends Uq {
 	CustomerRelatedProducts: UqMap;
 	ResearchDomain: UqMap;
 	OrganizationSetting: UqMap;
+	CustomerSettingAlter: UqMap;
 	$Piecewise: UqID<any>;
 	$PiecewiseDetail: UqID<any>;
 }

@@ -29,6 +29,11 @@ export const appConfig: AppConfig = {
 		},
 		{
 			dev: jk,
+			name: 'product',
+			version: '0.1.1',
+		},
+		{
+			dev: jk,
 			name: 'customer',
 			version: '0.1.0',
 		},

@@ -5,7 +5,7 @@ import { VCustomerReceive } from "./VCustomerReceive";
 import { QueryPager } from "tonva-react";
 
 export interface CustomerPendingReceive extends ReturnCustomerPendingReceiveRet {
-	isSelected: boolean;
+	//isSelected: boolean;
 }
 
 export function shouldReceive(cpr: CustomerPendingReceive):number {
@@ -42,20 +42,10 @@ export class CReceive extends CUqBase {
 		this.openVPage(VCustomerReceive);
 	}
 	
-	setCustomerPendingReceiveSelected(orderDetail: number, isSelected: boolean) {
-		let row = this.customerPendingReceive.find(v => v.orderDetail === orderDetail);
-		if (row) row.isSelected = isSelected;
-	}
-
-	doneReceive = async () => {
-		let receiveDetail = this.customerPendingReceive.filter(v => v.isSelected === true);
-		let detail = receiveDetail.map(v => ({
-			orderDetail: v.orderDetail,
-			amount: shouldReceive(v)
-		}));
+	doneReceive = async (receiveDetails: {orderDetail: number; amount: number;}[]) => {
 		await this.uqs.JkCollectPayment.DoneReceive.submit({
 			customer: this.customer,
-			detail
+			detail: receiveDetails,
 		});
 		await this.load();
 	}
